@@ -65,6 +65,14 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{env.DEPLOYMENT_NAME}}:${{ github.sha }}
 
+
+
+
+  deploy:
+    name: deploy application
+    runs-on: ubuntu-latest
+
+    steps:
       #setup google clod auth
       - id: "auth"
         name: "Authenticate to Google Cloud"
@@ -74,3 +82,14 @@ jobs:
       # Setup gcloud CLI
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
+
+      # Get the GKE credentials so we can deploy to the cluster
+      - run: |-
+          gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
+      #Deploy to K8s
+      - name: Deploy
+        run: |-
+          kubectl apply -f k8s/deployment.yaml -f k8s/service.yaml
+          kubectl set image deployment/$DEPLOYMENT_NAME driverms-app=tharindub/driverms:${{ github.sha }}
+          kubectl rollout status deployment/$DEPLOYMENT_NAME
+          kubectl get services -o wide

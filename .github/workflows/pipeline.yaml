@@ -69,10 +69,15 @@ jobs:
 
 
   deploy:
+    needs: setup-build-publish
     name: deploy application
     runs-on: ubuntu-latest
 
     steps:
+      - run: echo "Deplyment started"
+      #Checkout application to deploy
+      - name: Checkout repository
+        uses: actions/checkout@v3
       #setup google clod auth
       - id: "auth"
         name: "Authenticate to Google Cloud"

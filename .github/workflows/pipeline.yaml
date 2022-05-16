@@ -28,4 +28,4 @@ jobs:
         uses: "finnp/create-file-action@master"
         env:
           FILE_NAME: "src/main/resources/application.properties"
-          FILE_DATA: "file content"
+          FILE_DATA: ${{ secrets.APPLICATION_PROPERTIES }}

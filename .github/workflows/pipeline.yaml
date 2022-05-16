@@ -6,6 +6,9 @@ on:
       - main
 env:
   DEPLOYMENT_NAME: driverms
+  PROJECT_ID: ${{ secrets.GKA_PROJECT }}
+  GKE_CLUSTER: cluster-1-tharindu
+  GKE_ZONE: us-central1-c
 
 jobs:
   setup-build-publish:
@@ -61,3 +64,13 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{env.DEPLOYMENT_NAME}}:${{ github.sha }}
+
+      #setup google clod auth
+      - id: "auth"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v0"
+        with:
+          credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
+      # Setup gcloud CLI
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0

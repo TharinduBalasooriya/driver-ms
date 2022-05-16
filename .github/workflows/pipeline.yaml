@@ -19,10 +19,12 @@ jobs:
       -
         run: echo "Project repository has been clone in to the runner"
 
+      #Create resources dir
+      - name: Crete directory
+        run: mkdir -p src/main/resources/
       #Create application property file
       -
         name: Create application property file
-        run : mkdir -p src/main/resources/
         uses: "finnp/create-file-action@master"
         env:
           FILE_NAME: "src/main/resources/application.properties"

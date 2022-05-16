@@ -18,3 +18,11 @@ jobs:
         uses: actions/checkout@v3
       -
         run: echo "Project repository has been clone in to the runner"
+
+      #Create application property file
+      -
+        name: Create application property file
+        uses: "finnp/create-file-action@master"
+        env:
+          FILE_NAME: "src/main/resources/application.properties"
+          FILE_DATA: "file content"
